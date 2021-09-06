@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link href="./signin.css" rel="stylesheet">
+
+    <title>jhan.me 로그인 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <form class="form-signin" onsubmit="onSubmit(); return false;">
+        <img class="mb-4" src="http://qlqhqo2341.github.io/assets/images/profile.jpg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">jhan.me 로그인</h1>
+        <label for="idText" class="sr-only">ID</label>
+        <input id="idText" class="form-control" placeholder="id" required="" autofocus="">
+        <label for="passwordText" class="sr-only">Password</label>
+        <input type="password" id="passwordText" class="form-control" placeholder="Password" required="">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">jhan.me</p>
+      </form>
+    <script>
+        const getNextUrl = () => {
+            const params = new URLSearchParams(location.search);
+            if (params.has('nextUrl')) {
+                return params.get('nextUrl');
+            } else {
+                return null;
+            }
+        };
+        const onSubmit = (data) => {
+            const id = $("#idText").val();
+            const password = $("#passwordText").val();
+
+            $.ajax("/auth/api/login", { method: 'POST', data: {
+                id, password
+            }}).done((data, status) => {
+                const nextUrl = getNextUrl();
+                if (nextUrl) {
+                    location.replace(nextUrl);
+                } else {
+                    history.back();  
+                }
+            }).fail(() => {
+                alert("로그인에 실패했습니다.");
+            });
+        };
+    </script>
+
+</body>
+</html>
