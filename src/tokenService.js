@@ -2,10 +2,10 @@
 
 import jwt from 'jsonwebtoken';
 
-const { TOKEN_PRIVATE_KEY } = process.env;
+const { TOKEN_PRIVATE_KEY="abcde", TOKEN_EXPIRE_TIME="1h" } = process.env;
 
 const generateToken = (id) => {
-  return jwt.sign({ user: id }, TOKEN_PRIVATE_KEY, { expiresIn: '1h' });
+  return jwt.sign({ user: id }, TOKEN_PRIVATE_KEY, { expiresIn: TOKEN_EXPIRE_TIME });
 };
 
 const validateToken = (token) => {
