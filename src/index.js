@@ -19,6 +19,11 @@ app.get('/', (req, res) => {
   res.send('OK');
 });
 
+app.get('/auth/logout', async (req, res) => {
+  res.cookie(authHeaderName, 'deleted', { maxAge: -10000, domain: '.jhan.me' });
+  res.status(204).send();
+});
+
 app.get('/auth/l7check', (req, res) => {
   res.send('OK');
 });
@@ -45,11 +50,6 @@ app.post('/auth/api/login', async (req, res) => {
   } else {
     res.status(401).send({ success: false });
   }
-});
-
-app.post('/auth/api/logout', async (req, res) => {
-  res.cookie(authHeaderName, 'deleted', { maxAge: -10000, domain: '.jhan.me' });
-  res.send({ success: true });
 });
 
 app.listen(PORT);
